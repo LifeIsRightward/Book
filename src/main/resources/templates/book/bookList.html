@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>서점 도서목록</title>
+    <!--
+	<link rel="stylesheet" href="/css/board.css" />
+	-->
+    <link rel="stylesheet" th:href="@{/css/book.css}" />
+
+</head>
+<body>
+<div class="container">
+    <h2>서점 도서목록</h2>
+    <table class="book_list">
+        <colgroup>
+            <col width="15%" />
+            <col width="10%" />
+            <col width="10%" />
+            <col width="15%" />
+            <col width="*" />
+        </colgroup>
+        <thead>
+        <tr>
+            <th scope="col">서점고유 등록번호</th>
+            <th scope="col">책 제목</th>
+            <th scope="col">저자</th>
+            <th scope="col">출판사</th>
+            <th scope="col">설명</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.size(list)} > 0" th:each="list : ${list}">
+            <td th:text="${list.bookId}"></td>
+            <td class="title">
+                <a href="/book/openBookDetail.do?bookId="
+                   th:attrappend="href=${list.bookId}" th:text="${list.title}"></a>
+            </td>
+<!--            <td th:text="${list.title}" class="title"></td>-->
+            <td th:text="${list.author}"></td>
+            <td th:text="${list.publisher}"></td>
+            <td th:text="${list.description}"></td>
+        </tr>
+        <tr th:unless="${#lists.size(list)} > 0">
+            <td colspan="4">조회된 결과가 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/book/openBookRegister.do" class="btn">책 등록하기</a>
+</div>
+</body>
+</html>

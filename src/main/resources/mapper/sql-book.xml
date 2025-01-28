@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Book.mapper.BookMapper">
+    <select id="selectBookList" resultType="Book.dto.BookDto">
+        select
+            book_id as bookId,
+            title,
+            author,
+            publisher,
+            date_format(published_date, '%Y.%m.%d') as publishedDt,
+            isbn,
+            description,
+            date_format(created_at, '%Y.%m.%d %H:%i:%s') as createdDt,
+            date_format(updated_at, '%Y.%m.%d %H:%i:%s') as updatedDt
+        from books
+        where deleted_yn = 'N'
+        order by book_id desc
+    </select>
+
+    <!--
+        외부 입력값을 쿼리에 반영할 경우, #{ }을 이용해야 SQL 인젝션 공격을 방어할 수 있음
+     -->
+    <insert id="insertBook" parameterType="Book.dto.BookDto">
+        insert into books(title, author, publisher, published_date, isbn, description, created_at, updated_at)
+        values (#{title}, #{author}, #{publisher}, #{publishedDt}, #{isbn}, #{description} , now() ,now())
+    </insert>
+
+    <select id="selectBookDetail" parameterType="int" resultType="Book.dto.BookDto">
+        select book_id,
+               title,
+               author,
+               publisher,
+               date_format(published_date, '%Y.%m.%d') as publishedDt,
+               isbn,
+               description,
+               date_format(created_at, '%Y.%m.%d %H:%i:%s') as createdDt
+        from books
+        where book_id = #{bookId}
+    </select>
+
+    <update id="updateBook" parameterType="Book.dto.BookDto">
+        update books
+        set title = #{title},
+            author = #{author},
+            publisher = #{publisher},
+            published_date = str_to_date(#{publishedDt}, '%Y.%m.%d'),
+            isbn = #{isbn},
+            description = #{description},
+            updated_at = now()
+        where book_id = #{bookId}
+    </update>
+
+    <delete id="deleteBook" parameterType="Book.dto.BookDto">
+        update books
+        set deleted_yn = 'Y',
+            updated_at = now()
+        where book_id = #{bookId}
+    </delete>
+
+
+
+</mapper>
