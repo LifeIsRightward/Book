@@ -19,11 +19,24 @@
 
     <!--
         외부 입력값을 쿼리에 반영할 경우, #{ }을 이용해야 SQL 인젝션 공격을 방어할 수 있음
+        useGeneratedKeys : DBMS가 자동 생성한 키를 사용
+        keyProperty : 반환하는 키
      -->
-    <insert id="insertBook" parameterType="Book.dto.BookDto">
+    <insert id="insertBook" parameterType="Book.dto.BookDto"
+            useGeneratedKeys="true" keyProperty="bookIdx">
         insert into books(title, author, publisher, published_date, isbn, description, created_at, updated_at)
-        values (#{title}, #{author}, #{publisher}, #{publishedDt}, #{isbn}, #{description} , now() ,now())
+        values (#{title}, #{author}, #{publisher}, STR_TO_DATE(#{publishedDt}, '%Y.%m.%d'), #{isbn}, #{description} , now() ,now())
     </insert>
+
+    <insert id="insertBookFileList" parameterType="book.dto.BookFileDto">
+        insert into t_file
+        (book_idx, original_file_name, stored_file_path, file_size, created_id, created_dt)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.bookIdx}, #{item.originalFileName}, #{item.storedFilePath}, #{item.fileSize}, 'admin', now())
+        </foreach>
+    </insert>
+
 
     <select id="selectBookDetail" parameterType="int" resultType="Book.dto.BookDto">
         select book_id,
@@ -56,6 +69,13 @@
             updated_at = now()
         where book_id = #{bookId}
     </delete>
+
+    <select id="selectBookFileList" parameterType="int" resultType="Book.dto.BookFileDto">
+        select idx, book_idx, original_file_name, format(round(file_size/1024), 0) as file_size
+        from books
+        where boook_idx = #{bookIdx} and deleted_yn = 'N'
+    </select>
+
 
 
 

@@ -2,6 +2,8 @@ package Book.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class BookDto {
     private int bookId;
@@ -13,6 +15,7 @@ public class BookDto {
     private String description;
     private String createdDt;
     private String updatedDt;
+    private List<BookFileDto> fileInfoList;
 
     public String getUpdatedDt() {
         return updatedDt;
@@ -84,5 +87,13 @@ public class BookDto {
 
     public void setBookId(int bookId) {
         this.bookId = bookId;
+    }
+
+    public List<BookFileDto> getFileInfoList() {
+        return fileInfoList;
+    }
+
+    public void setFileInfoList(List<BookFileDto> fileInfoList) {
+        this.fileInfoList = fileInfoList;
     }
 }

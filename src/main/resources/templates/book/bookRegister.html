@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <h2>책 등록</h2>
-    <form id="frm" method="post" action="/book/insertBook.do">
+    <form id="frm" method="post" action="/book/insertBook.do" enctype="multipart/form-data">
         <table class="book_detail">
             <tr>
                 <td>제목</td>
@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <td>출판일</td>
-                <td><input type="text" id="published_date" name="published_date" /></td>
+                <td><input type="text" id="publishedDt" name="publishedDt" /></td>
             </tr>
             <tr>
                 <td>isbn</td>
@@ -34,6 +34,7 @@
                 <td colspan="2">설명<textarea id="description" name="description"></textarea></td>
             </tr>
         </table>
+        <input type="file" id="files" name="files" multiple="multiple" />
         <input type="submit" id="submit" value="저장" class="btn" />
     </form>
 </div>
