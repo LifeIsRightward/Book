@@ -66,26 +66,40 @@
 
     <insert id="insertBookFileList" parameterType="list">
         insert into bookimages
-        (book_id, image_url, created_at, deleted_yn)
+        (book_id, image_url, created_at, deleted_yn, originalFileName)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.bookId}, #{item.storedFilePath}, now(), 'N')
+            (#{item.bookId}, #{item.storedFilePath}, now(), 'N', #{item.originalFileName})
         </foreach>
     </insert>
 
 
 
+<!--    <select id="selectBookFileList" parameterType="int" resultType="Book.dto.BookFileDto">-->
+<!--        select-->
+<!--            image_id as idx,-->
+<!--            book_id,-->
+<!--            image_url as original_file_name,-->
+<!--            format(round(octet_length(image_url)/1024, 0), 0) as file_size,-->
+<!--            created_at,-->
+<!--            deleted_yn-->
+<!--        from bookimages-->
+<!--        where book_id = #{bookId} and deleted_yn = 'N'-->
+<!--    </select>-->
+
     <select id="selectBookFileList" parameterType="int" resultType="Book.dto.BookFileDto">
         select
             image_id as idx,
             book_id,
-            image_url as original_file_name,
+            image_url as storedFilePath, -- 경로는 storedFilePath로 매핑
+            originalFileName as originalFileName, -- 원본 파일 이름은 originalFileName으로 매핑
             format(round(octet_length(image_url)/1024, 0), 0) as file_size,
             created_at,
             deleted_yn
         from bookimages
         where book_id = #{bookId} and deleted_yn = 'N'
     </select>
+
 
 
 
