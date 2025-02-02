@@ -13,6 +13,7 @@ import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,11 +36,18 @@ public class BookServiceImpl implements BookService {
         return bookMapper.selectBookList();
     }
 
-    @Override
+    @Transactional
     public void insertBook(BookDto bookDto, MultipartHttpServletRequest request) {
         // 지금 생성된 날짜를
-//        bookDto.setCreatedDt();
+        //        bookDto.setCreatedDt();
+        //        bookMapper.insertBook(bookDto);
+
+        // 1. Books 테이블에 책 데이터 삽입
 //        bookMapper.insertBook(bookDto);
+
+
+        // MyBatis로 데이터 삽입
+        bookMapper.insertBook(bookDto);
 
         if (!ObjectUtils.isEmpty(request)) {
             // <input type="file" name="이 속성의 값" />
@@ -68,22 +76,29 @@ public class BookServiceImpl implements BookService {
             log.error(e.getMessage());
         }
 
-
-
-
         // 현재 시간 포맷팅
         String currentDateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 
+
         // 생성된 날짜를 설정
         bookDto.setCreatedDt(currentDateTime);
-        // MyBatis로 데이터 삽입
-        bookMapper.insertBook(bookDto);
+
+
+        int bookId = bookDto.getBookId(); // 자동 생성된 book_id 가져오기
+        System.out.println("생성된 bookId: " + bookId); // 로그로 확인
     }
 
     @Override
     public BookDto selectBookDetail(int bookId) {
-        return bookMapper.selectBookDetail(bookId);
+//        return bookMapper.selectBookDetail(bookId);
+
+        BookDto bookDto = bookMapper.selectBookDetail(bookId);
+        List<BookFileDto> bookFileInfoList = bookMapper.selectBookFileList(bookId);
+        bookDto.setFileInfoList(bookFileInfoList);
+
+        return bookDto;
+
     }
     @Override
     public void updateBook(BookDto bookDto) {

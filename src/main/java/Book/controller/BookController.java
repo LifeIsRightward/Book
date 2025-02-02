@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,13 +36,21 @@ public class BookController {
         return "/book/bookRegister";
     }
 
-    // 글 저장 요청을 처리하는 메서드
+    // 책 정보 저장 요청을 처리하는 메서드
     @PostMapping("/book/insertBook.do")
     public String insertBook(BookDto bookDto, MultipartHttpServletRequest request) throws Exception {
-        System.out.println("여긴, 컨트롤러의 인서트 북이야! >>>>>> ");
-        System.out.println(bookDto);
-        System.out.println(request);
+        System.out.println("책 데이터: " + bookDto);
+
+        // 업로드된 파일 확인
+        List<MultipartFile> fileList = request.getFiles("files");
+        System.out.println("업로드된 파일 개수: " + fileList.size());
+        for (MultipartFile file : fileList) {
+            System.out.println("파일 이름: " + file.getOriginalFilename());
+        }
+
+        // 서비스 호출
         bookService.insertBook(bookDto, request);
+
         return "redirect:/book/openBookList.do";
     }
     // 상세 조회 요청을 처리하는 메서드

@@ -22,20 +22,13 @@
         useGeneratedKeys : DBMS가 자동 생성한 키를 사용
         keyProperty : 반환하는 키
      -->
-    <insert id="insertBook" parameterType="Book.dto.BookDto"
-            useGeneratedKeys="true" keyProperty="bookIdx">
+    <insert id="insertBook" parameterType="Book.dto.BookDto" useGeneratedKeys="true" keyProperty="bookId">
         insert into books(title, author, publisher, published_date, isbn, description, created_at, updated_at)
         values (#{title}, #{author}, #{publisher}, STR_TO_DATE(#{publishedDt}, '%Y.%m.%d'), #{isbn}, #{description} , now() ,now())
     </insert>
 
-    <insert id="insertBookFileList" parameterType="book.dto.BookFileDto">
-        insert into t_file
-        (book_idx, original_file_name, stored_file_path, file_size, created_id, created_dt)
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.bookIdx}, #{item.originalFileName}, #{item.storedFilePath}, #{item.fileSize}, 'admin', now())
-        </foreach>
-    </insert>
+
+
 
 
     <select id="selectBookDetail" parameterType="int" resultType="Book.dto.BookDto">
@@ -70,11 +63,30 @@
         where book_id = #{bookId}
     </delete>
 
+
+    <insert id="insertBookFileList" parameterType="list">
+        insert into bookimages
+        (book_id, image_url, created_at, deleted_yn)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.bookId}, #{item.storedFilePath}, now(), 'N')
+        </foreach>
+    </insert>
+
+
+
     <select id="selectBookFileList" parameterType="int" resultType="Book.dto.BookFileDto">
-        select idx, book_idx, original_file_name, format(round(file_size/1024), 0) as file_size
-        from books
-        where boook_idx = #{bookIdx} and deleted_yn = 'N'
+        select
+            image_id as idx,
+            book_id,
+            image_url as original_file_name,
+            format(round(octet_length(image_url)/1024, 0), 0) as file_size,
+            created_at,
+            deleted_yn
+        from bookimages
+        where book_id = #{bookId} and deleted_yn = 'N'
     </select>
+
 
 
 

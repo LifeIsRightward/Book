@@ -22,7 +22,7 @@ public class BookUtils {
     private String uploadDir;
 
     // 요청을 통해서 전달받은 파일을 저장하고, 파일 정보를 반환하는 메서드
-    public List<BookFileDto> parseFileInfo(int bookIdx, MultipartHttpServletRequest request) throws Exception {
+    public List<BookFileDto> parseFileInfo(int bookId, MultipartHttpServletRequest request) throws Exception {
         if (ObjectUtils.isEmpty(request)) {
             return null;
         }
@@ -69,9 +69,10 @@ public class BookUtils {
 
                     // 파일 정보를 리스트에 저장
                     BookFileDto dto = new BookFileDto();
-                    dto.setBookIdx(bookIdx);
-                    dto.setFileSize(Long.toString(file.getSize()));
+                    dto.setBookId(bookId);
+//                    dto.setFileSize(Long.toString(file.getSize()));
                     dto.setOriginalFileName(file.getOriginalFilename());
+//                    dto.setImageurl(storedFilePath);
                     dto.setStoredFilePath(storedFilePath);
                     fileInfoList.add(dto);
 

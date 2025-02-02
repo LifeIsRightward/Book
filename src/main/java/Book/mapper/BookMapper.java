@@ -13,4 +13,5 @@ public interface BookMapper {
     void updateBook(BookDto bookDto);
     void deleteBook(BookDto bookDto);
     void insertBookFileList(List<BookFileDto> fileInfoList);
+    List<BookFileDto> selectBookFileList(int bookId);
 }
