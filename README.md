@@ -41,10 +41,10 @@
 -> 해결. 타임리프에서 input 필드의 id와 name이 publishedDt로 되어있어야 하는데, 나는 published_Date 이렇게 되어있었음.
 
 #### 파일 업로드하는 기능을 만들고 실행, 오류가 발생
--> 해결 book.BookDto의 path가 wrong path이라는 오류
--> book-sql.xml (마이바티스의 sql 쿼리) 의 resultType이 잘못된 경로였다는 점.
--> 또한, bookId가 저장된 이후에, BookImages에 접근하여 사진을 저장해야한다는 사실. (즉, 순서가 중요하다.)
--> bookDto에 값이 저장되지 않았는데, bookFileDto를 처리할 수는 없다.
+-> 해결 book.BookDto의 path가 wrong path이라는 오류 <br>
+-> book-sql.xml (마이바티스의 sql 쿼리) 의 resultType이 잘못된 경로였다는 점. <br>
+-> 또한, bookId가 저장된 이후에, BookImages에 접근하여 사진을 저장해야한다는 사실. (즉, 순서가 중요하다.) <br>
+-> bookDto에 값이 저장되지 않았는데, bookFileDto를 처리할 수는 없다. <br>
 
 
 #### isbn 중복 처리
