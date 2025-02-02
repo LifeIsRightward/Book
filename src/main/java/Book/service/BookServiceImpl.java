@@ -114,6 +114,12 @@ public class BookServiceImpl implements BookService {
         bookMapper.deleteBook(bookDto);
     }
 
+    @Override
+    public BookFileDto selectBookFileInfo(int idx, int bookId) {
+        return bookMapper.selectBookFileInfo(idx, bookId);
+    }
+
+
 
 
 }

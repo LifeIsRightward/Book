@@ -1,10 +1,20 @@
 package Book.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import Book.dto.BookFileDto;
 import Book.service.BookService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -81,6 +91,38 @@ public class BookController {
         return "redirect:/book/openBookList.do";
     }
 
+    @GetMapping("/book/downloadBookFile.do")
+    public void downloadBookFile(@RequestParam("idx") int idx, @RequestParam("bookId") int bookId, HttpServletResponse response) throws Exception {
+        // 파일 정보 조회
+        BookFileDto bookFileDto = bookService.selectBookFileInfo(idx, bookId);
+        if (ObjectUtils.isEmpty(bookFileDto)) {
+            throw new FileNotFoundException("File not found for idx: " + idx + ", bookId: " + bookId);
+        }
+
+        // 파일 경로 유효성 검사
+        Path path = Paths.get(bookFileDto.getStoredFilePath());
+        if (!Files.exists(path)) {
+            throw new FileNotFoundException("File not found at path: " + path.toString());
+        }
+
+        // 파일 읽기
+        byte[] file = Files.readAllBytes(path);
+
+        // 응답 헤더 설정
+        String encodedFileName = URLEncoder.encode(bookFileDto.getOriginalFileName(), "UTF-8").replaceAll("\\+", "%20");
+        response.setContentType("application/octet-stream");
+        response.setContentLength(file.length);
+        response.setHeader("Content-Disposition", "attachment; fileName=\"" + encodedFileName + "\";");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        // 파일 스트림 전송
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            outputStream.write(file);
+            outputStream.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write file to response", e);
+        }
+    }
 
 
 

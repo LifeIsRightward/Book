@@ -100,6 +100,17 @@
         where book_id = #{bookId} and deleted_yn = 'N'
     </select>
 
+    <select id="selectBookFileInfo" parameterType="map" resultType="Book.dto.BookFileDto">
+        SELECT
+        image_id AS idx,
+        book_id,
+        image_url AS storedFilePath,   <!-- 여기서 storedFilePath 대신 image_url로 변경 -->
+        originalFileName
+        FROM bookimages
+        WHERE image_id = #{idx} AND book_id = #{bookId} AND deleted_yn = 'N'
+    </select>
+
+
 
 
 

@@ -42,7 +42,8 @@
         </table>
     </form>
     <div class="file_list">
-        <a th:each="file : ${book.fileInfoList}" th:text="|${file.originalFileName}|"></a>
+        <a th:each="file : ${book.fileInfoList}" th:text="|${file.originalFileName}|"
+           th:href="@{/book/downloadBookFile.do(idx=${file.idx}, bookId=${file.bookId})}"></a>
     </div>
     <input type="button" id="list" class="btn" value="목록으로" />
     <input type="button" id="update" class="btn" value="수정하기" />
