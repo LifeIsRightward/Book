@@ -4,6 +4,8 @@ import Book.dto.BookDto;
 import Book.dto.BookFileDto;
 import Book.service.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,6 +28,7 @@ public class RestApiBookController {
 
 
     // 목록 조회
+    @Operation(summary = "책 리스트 조회", description = "등록된 책 정보 목록을 조회해서 반환합니다.")
     @GetMapping("/book")
     public List<BookDto> openBookList() throws Exception {
         return bookService.selectBookList();
@@ -40,6 +43,8 @@ public class RestApiBookController {
     }
 
     // 상세 조회
+    @Operation(summary = "책 리스트 상세 조회", description = "책 정보 아이디와 일치하는 상세 정보를 조회해서 반환합니다.")
+    @Parameter(name = "bookId", description = "책 아이디", required = true)
     @GetMapping("/book/{bookId}")
     public BookDto openBookDetail(@PathVariable("bookId") int bookId) throws Exception {
         return bookService.selectBookDetail(bookId);

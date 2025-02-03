@@ -3,6 +3,8 @@ package Book.controller;
 import Book.dto.BookDto;
 import Book.dto.BookFileDto;
 import Book.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ public class RestController {
     private BookService bookService;
 
     //목록 조회
+    @Operation(summary = "책 리스트 조회", description = "등록된 책 정보 목록을 조회해서 반환합니다.")
     @GetMapping("/book")
     public ModelAndView openBookList() throws Exception {
         ModelAndView mv = new ModelAndView("/book/restBookList");
@@ -41,6 +44,9 @@ public class RestController {
     }
 
     // 책쓰기 화면 요청을 처리하는 메서드
+    @Operation(summary = "책 리스트 상세 조회", description = "책 정보 아이디와 일치하는 상세 정보를 조회해서 반환합니다.")
+    @Parameter(name = "bookId", description = "책 아이디", required = true)
+
     @GetMapping("/book/write")
     public String openBookWrite() throws Exception {
         return "/book/restBookRegister";
