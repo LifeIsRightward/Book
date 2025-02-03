@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rest 서점 도서목록</title>
+    <link rel="stylesheet" th:href="@{/css/book.css}" />
+</head>
+<body>
+<div class="container">
+    <h2>Rest 책 등록</h2>
+    <!--    <form id="frm" method="post" action="/book/insertBook.do" enctype="multipart/form-data">-->
+    <form id="frm" method="post" action="/book/write" enctype="multipart/form-data">
+        <table class="book_detail">
+            <tr>
+                <td>제목</td>
+                <td><input type="text" id="title" name="title" /></td>
+            </tr>
+            <tr>
+                <td>저자</td>
+                <td><input type="text" id="author" name="author" /></td>
+            </tr>
+            <tr>
+                <td>출판사</td>
+                <td><input type="text" id="publisher" name="publisher" /></td>
+            </tr>
+            <tr>
+                <td>출판일</td>
+                <td><input type="text" id="publishedDt" name="publishedDt" /></td>
+            </tr>
+            <tr>
+                <td>isbn</td>
+                <td><input type="text" id="isbn" name="isbn" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">설명<textarea id="description" name="description"></textarea></td>
+            </tr>
+        </table>
+        <input type="file" id="files" name="files" multiple="multiple" />
+        <input type="submit" id="submit" value="저장" class="btn" />
+    </form>
+</div>
+</body>
+</html>

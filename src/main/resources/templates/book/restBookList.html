@@ -33,10 +33,12 @@
         <tr th:if="${#lists.size(list)} > 0" th:each="list : ${list}">
             <td th:text="${list.bookId}"></td>
             <td class="title">
-                <a href="/book/openBookDetail.do?bookId="
+                <!--                <a href="/book/openBookDetail.do?bookId="-->
+                <!--                   th:attrappend="href=${list.bookId}" th:text="${list.title}"></a>-->
+                <a href="/book/"
                    th:attrappend="href=${list.bookId}" th:text="${list.title}"></a>
             </td>
-<!--            <td th:text="${list.title}" class="title"></td>-->
+            <!--            <td th:text="${list.title}" class="title"></td>-->
             <td th:text="${list.author}"></td>
             <td th:text="${list.publisher}"></td>
             <td th:text="${list.description}"></td>
@@ -46,7 +48,8 @@
         </tr>
         </tbody>
     </table>
-    <a href="/book/openBookRegister.do" class="btn">책 등록하기</a>
+    <!--    <a href="/book/openBookRegister.do" class="btn">책 등록하기</a>-->
+    <a href="/book/write" class="btn">책 등록하기</a>
 </div>
 </body>
 </html>
