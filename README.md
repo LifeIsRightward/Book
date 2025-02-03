@@ -1,5 +1,4 @@
-## 도서관리 프로젝트(CRUD)
-### (타임 리프 -> REST API with React)
+## 도서관리 프로젝트(CRUD Thymeleaf -> REST API with React)
 
 
 ### (Thymeleaf CRUD Without RestAPI) <br>
