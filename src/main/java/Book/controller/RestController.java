@@ -2,12 +2,14 @@ package Book.controller;
 
 import Book.dto.BookDto;
 import Book.dto.BookFileDto;
+import Book.dto.BookInsertRequest;
 import Book.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -54,8 +56,9 @@ public class RestController {
 
     // 책 정보 저장 요청을 처리하는 메서드
     @PostMapping("/book/write")
-    public String insertBook(BookDto bookDto, MultipartHttpServletRequest request) throws Exception {
-        System.out.println("책 데이터: " + bookDto);
+//    public String insertBook(BookDto bookDto, MultipartHttpServletRequest request) throws Exception {
+    public String insertBook(BookInsertRequest bookInsertRequest, MultipartHttpServletRequest request) throws Exception {
+//            System.out.println("책 데이터: " + bookDto);
 
         // 업로드된 파일 확인
         List<MultipartFile> fileList = request.getFiles("files");
@@ -63,10 +66,15 @@ public class RestController {
         for (MultipartFile file : fileList) {
             System.out.println("파일 이름: " + file.getOriginalFilename());
         }
+        // 서비스 메서드에 맞춰서 데이터를 변경
+//        BookDto bookDto = new BookDto();
+//        bookDto.setTitle(bookInsertRequest.getTitle());
+//        bookDto.setDescription(bookInsertRequest.getDescription());
+        // -> 요거(위에)를 한 방에 매핑해주는 애가 바로
+        BookDto bookDto = new ModelMapper().map(bookInsertRequest, BookDto.class);
 
         // 서비스 호출
         bookService.insertBook(bookDto, request);
-
         return "redirect:/book";
     }
 

@@ -94,11 +94,12 @@ public class BookServiceImpl implements BookService {
 //        return bookMapper.selectBookDetail(bookId);
 
         BookDto bookDto = bookMapper.selectBookDetail(bookId);
-        List<BookFileDto> bookFileInfoList = bookMapper.selectBookFileList(bookId);
-        bookDto.setFileInfoList(bookFileInfoList);
+        if(bookDto != null) {
+            List<BookFileDto> bookFileInfoList = bookMapper.selectBookFileList(bookId);
+            bookDto.setFileInfoList(bookFileInfoList);
+        }
 
         return bookDto;
-
     }
     @Override
     public void updateBook(BookDto bookDto) {
