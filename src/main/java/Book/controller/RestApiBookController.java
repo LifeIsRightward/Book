@@ -29,6 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class RestApiBookController {
     @Autowired
     private BookService bookService;
@@ -101,6 +102,7 @@ public class RestApiBookController {
     @PutMapping("/book/{bookId}")
     public void updateBook(@PathVariable("bookId") int bookId, @RequestBody BookDto bookDto) throws Exception {
         bookDto.setBookId(bookId);
+        System.out.println("여긴 컨트롤러의 Put Update 메서드" + bookDto.getBookId());
         bookService.updateBook(bookDto);
     }
 
